@@ -1,32 +1,23 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import BlogForm from "./components/BlogForm";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import routes from "./routes";
 
 function App() {
   return (
     <Router>
-      <nav className="navbar navbar-dark bg-dark">
-        <div className="container">
-          <Link className="navbar-brand" to="/">
-            Home
-          </Link>
-
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/blogs">
-                Blogs
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <NavBar />
       <div className="container">
         <Switch>
-          <Route path="/" exact>
-            Home Page
-          </Route>
-          <Route path="/blogs">
-            <BlogForm />
-          </Route>
+          {routes.map((route) => {
+            return (
+              <Route
+                key={route.path}
+                exact
+                path={route.path}
+                component={route.component}
+              />
+            );
+          })}
         </Switch>
       </div>
     </Router>
