@@ -1,24 +1,14 @@
 {
   "posts": [
     {
-      "title": "123123",
-      "body": "123123",
+      "title": "dsfsdfsdf",
+      "body": "12345",
       "id": 1
     },
     {
-      "title": "hello",
-      "body": "body",
+      "title": "dsfssdf34",
+      "body": "dsfsdf343",
       "id": 2
-    },
-    {
-      "title": "test1",
-      "body": "test23",
-      "id": 3
-    },
-    {
-      "title": "1234",
-      "body": "1234",
-      "id": 4
     }
   ]
 }
