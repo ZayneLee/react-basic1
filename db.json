@@ -1,10 +1,16 @@
 {
   "posts": [
     {
-      "title": "veuw",
-      "body": "vuew",
+      "title": "react",
+      "body": "react",
       "createdAt": 1672839445577,
       "id": 3
+    },
+    {
+      "title": "redux",
+      "body": "redux",
+      "createdAt": 1672926714564,
+      "id": 4
     }
   ]
 }

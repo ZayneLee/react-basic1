@@ -1,25 +1,44 @@
 import axios from "axios";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { bool } from "prop-types";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
-const BlogForm = () => {
+const BlogForm = ({ editing }) => {
   const history = useHistory();
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const onSubmit = () => {
-    axios
-      .post("http://localhost:3001/posts", {
-        title,
-        body,
-        createdAt: Date.now(),
-      })
-      .then(() => {
-        history.push("/blogs");
-      });
+    if (editing) {
+      axios
+        .patch(`http://localhost:3001/posts/${id}`, {
+          title,
+          body,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    } else {
+      axios
+        .post("http://localhost:3001/posts", {
+          title,
+          body,
+          createdAt: Date.now(),
+        })
+        .then(() => {
+          history.push("/blogs");
+        });
+    }
   };
+  useEffect(() => {
+    axios.get(`http://localhost:3001/posts/${id}`).then((res) => {
+      setTitle(res.data.title);
+      setBody(res.data.body);
+    });
+  }, [id]);
   return (
     <div>
-      <h1>Create a blog post</h1>
+      <h1>{editing ? "Edit" : "Create"} a blog post</h1>
       <div className="mb-3">
         <label className="form-label">Title</label>
         <input
@@ -38,14 +57,22 @@ const BlogForm = () => {
           onChange={(event) => {
             setBody(event.target.value);
           }}
-          rows="20"
+          rows="10"
         />
       </div>
       <button className="btn btn-primary" onClick={onSubmit}>
-        Post
+        {editing ? "Edit" : "Post"}
       </button>
     </div>
   );
+};
+
+BlogForm.propTypes = {
+  editing: bool,
+};
+
+BlogForm.defaultProps = {
+  editing: false,
 };
 
 export default BlogForm;
