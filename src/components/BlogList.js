@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import Card from "./Card";
 import LoadingSpinner from "./LoadingSpinner";
 import propTypes, { bool } from "prop-types";
+import Pagination from "./Pagination";
 
 const BlogList = ({ isAdmin }) => {
   const history = useHistory();
@@ -34,30 +35,39 @@ const BlogList = ({ isAdmin }) => {
   if (posts.length === 0) {
     return <div>No blog posts found</div>;
   }
-  return posts
-    .filter((post) => {
-      return isAdmin || post.publish;
-    })
-    .map((post) => {
-      return (
-        <Card
-          key={post.id}
-          title={post.title}
-          onClick={() => history.push(`/blogs/${post.id}`)}
-        >
-          {isAdmin ? (
-            <div>
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={(e) => deleteBlog(e, post.id)}
-              >
-                Delete
-              </button>
-            </div>
-          ) : null}
-        </Card>
-      );
-    });
+
+  const renderBlogList = () => {
+    return posts
+      .filter((post) => {
+        return isAdmin || post.publish;
+      })
+      .map((post) => {
+        return (
+          <Card
+            key={post.id}
+            title={post.title}
+            onClick={() => history.push(`/blogs/${post.id}`)}
+          >
+            {isAdmin ? (
+              <div>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={(e) => deleteBlog(e, post.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            ) : null}
+          </Card>
+        );
+      });
+  };
+  return (
+    <div>
+      {renderBlogList()}
+      <Pagination />
+    </div>
+  );
 };
 
 BlogList.propTypes = {
