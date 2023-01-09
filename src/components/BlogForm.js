@@ -29,7 +29,7 @@ const BlogForm = ({ editing }) => {
           body,
           publish,
         })
-        .then((res) => {
+        .then(() => {
           history.push(`/blogs/${id}`);
         });
     } else {
