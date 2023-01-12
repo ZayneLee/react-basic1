@@ -1,5 +1,5 @@
 import axios from "axios";
-import { bool } from "prop-types";
+import propTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Card from "./Card";
@@ -16,7 +16,8 @@ const BlogList = ({ isAdmin }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
-  const limit = 1;
+  const [searchText, setSearchText] = useState("");
+  const limit = 5;
 
   useEffect(() => {
     setNumberOfPages(Math.ceil(numberOfPosts / limit));
@@ -34,6 +35,7 @@ const BlogList = ({ isAdmin }) => {
         _limit: limit,
         _sort: "id",
         _order: "desc",
+        title_like: searchText,
       };
 
       if (!isAdmin) {
@@ -46,7 +48,7 @@ const BlogList = ({ isAdmin }) => {
         setLoading(false);
       });
     },
-    [isAdmin]
+    [isAdmin, searchText]
   );
 
   useEffect(() => {
@@ -63,9 +65,6 @@ const BlogList = ({ isAdmin }) => {
 
   if (loading) {
     return <LoadingSpinner />;
-  }
-  if (posts.length === 0) {
-    return <div>No blog posts found</div>;
   }
 
   const renderBlogList = () => {
@@ -90,22 +89,42 @@ const BlogList = ({ isAdmin }) => {
       );
     });
   };
+
+  const onSearch = () => {
+    getPosts(1);
+  };
+
   return (
     <div>
-      {renderBlogList()}
-      {numberOfPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          numberOfPages={numberOfPages}
-          onClick={onClickPageButton}
-        />
+      <input
+        type="text"
+        placeholder="search"
+        className="form-control"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        onKeyUp={onSearch}
+      />
+      <hr />
+      {posts.length === 0 ? (
+        <div>No blog posts found</div>
+      ) : (
+        <>
+          {renderBlogList()}
+          {numberOfPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              numberOfPages={numberOfPages}
+              onClick={onClickPageButton}
+            />
+          )}
+        </>
       )}
     </div>
   );
 };
 
 BlogList.propTypes = {
-  isAdmin: bool,
+  isAdmin: propTypes.bool,
 };
 
 BlogList.defaultProps = {
