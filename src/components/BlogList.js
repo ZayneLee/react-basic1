@@ -5,6 +5,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import Card from "./Card";
 import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./Pagination";
+import Toast from "./Toast";
 
 const BlogList = ({ isAdmin }) => {
   const history = useHistory();
@@ -100,6 +101,14 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
+      <Toast
+        toasts={[
+          { text: "error", type: "danger" },
+          { text: "success", type: "success" },
+          { text: "success" },
+          { text: "success" },
+        ]}
+      />
       <input
         type="text"
         placeholder="search"
