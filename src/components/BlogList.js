@@ -6,6 +6,7 @@ import Card from "./Card";
 import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./Pagination";
 import Toast from "./Toast";
+import { v4 as uuidv4 } from "uuid";
 
 const BlogList = ({ isAdmin }) => {
   const history = useHistory();
@@ -18,6 +19,7 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [searchText, setSearchText] = useState("");
+  const [toasts, setToasts] = useState([]);
   const limit = 5;
 
   useEffect(() => {
@@ -57,10 +59,29 @@ const BlogList = ({ isAdmin }) => {
     getPosts(parseInt(pageParam) || 1);
   }, []);
 
+  const addToast = (toast) => {
+    const toastWithId = {
+      ...toast,
+      id: uuidv4(),
+    };
+    setToasts((prev) => [...prev, toastWithId]);
+  };
+
+  const deleteToast = (id) => {
+    const filtered = toasts.filter((toast) => {
+      return toast.id !== id;
+    });
+    setToasts(filtered);
+  };
+
   const deleteBlog = (e, id) => {
     e.stopPropagation();
     axios.delete(`http://localhost:3001/posts/${id}`).then(() => {
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+      addToast({
+        text: "Successfully deleted",
+        type: "success",
+      });
     });
   };
 
@@ -101,14 +122,7 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
-      <Toast
-        toasts={[
-          { text: "error", type: "danger" },
-          { text: "success", type: "success" },
-          { text: "success" },
-          { text: "success" },
-        ]}
-      />
+      <Toast toasts={toasts} deleteToast={deleteToast} />
       <input
         type="text"
         placeholder="search"
