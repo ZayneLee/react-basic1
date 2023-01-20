@@ -1,11 +1,12 @@
 import axios from "axios";
 import propTypes from "prop-types";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import Toast from "./Toast";
+import useToast from "../hooks/toast";
 
 const BlogForm = ({ editing }) => {
+  const [toasts, addToast, deleteToast] = useToast();
   const history = useHistory();
   const { id } = useParams();
   const [title, setTitle] = useState("");
@@ -16,9 +17,6 @@ const BlogForm = ({ editing }) => {
   const [originalPublish, setOriginalPublish] = useState(false);
   const [titleError, setTitleError] = useState(false);
   const [bodyError, setBodyError] = useState(false);
-  // const [toasts, setToasts] = useState([]);
-  const [, setToastRerender] = useState(false);
-  const toasts = useRef([]);
 
   const goBack = () => {
     if (editing) {
@@ -42,32 +40,6 @@ const BlogForm = ({ editing }) => {
     }
 
     return validated;
-  };
-
-  const addToast = (toast) => {
-    const id = uuidv4();
-    const toastWithId = {
-      ...toast,
-      id,
-    };
-    toasts.current = [...toasts.current, toastWithId];
-    setToastRerender((prev) => !prev);
-
-    // setToasts((prev) => [...prev, toastWithId]);
-
-    setTimeout(() => {
-      deleteToast(id);
-    }, 5000);
-  };
-
-  const deleteToast = (id) => {
-    console.log(toasts);
-    const filtered = toasts.current.filter((toast) => {
-      return toast.id !== id;
-    });
-    toasts.current = filtered;
-    setToastRerender((prev) => !prev);
-    // setToasts(filtered);
   };
 
   const onSubmit = () => {
@@ -129,7 +101,7 @@ const BlogForm = ({ editing }) => {
 
   return (
     <div>
-      <Toast toasts={toasts.current} deleteToast={deleteToast} />
+      <Toast toasts={toasts} deleteToast={deleteToast} />
       <h1>{editing ? "Edit" : "Create"} a blog post</h1>
       <div className="mb-3">
         <label className="form-label">Title</label>
