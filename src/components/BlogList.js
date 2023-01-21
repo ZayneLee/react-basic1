@@ -1,16 +1,14 @@
 import axios from "axios";
 import propTypes from "prop-types";
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import useToast from "../hooks/toast";
 import Card from "./Card";
 import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./Pagination";
-import Toast from "./Toast";
-import { v4 as uuidv4 } from "uuid";
-import useToast from "../hooks/toast";
 
 const BlogList = ({ isAdmin }) => {
-  const [toasts, addToast, deleteToast] = useToast();
+  const { addToast } = useToast();
   const history = useHistory();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -21,6 +19,7 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [searchText, setSearchText] = useState("");
+
   const limit = 5;
 
   useEffect(() => {
@@ -108,7 +107,6 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
-      <Toast toasts={toasts} deleteToast={deleteToast} />
       <input
         type="text"
         placeholder="search"
