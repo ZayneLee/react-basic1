@@ -3,6 +3,7 @@ import CreatePage from "./pages/CreatePage";
 import EditPage from "./pages/EditPage";
 import HomePage from "./pages/HomePage";
 import ListPage from "./pages/ListPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import ShowPage from "./pages/ShowPage";
 
 const routes = [
@@ -32,6 +33,10 @@ const routes = [
   {
     path: "/blogs/:id",
     component: ShowPage,
+  },
+  {
+    path: "*",
+    component: NotFoundPage,
   },
 ];
 
