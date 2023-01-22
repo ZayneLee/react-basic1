@@ -17,14 +17,17 @@ const routes = [
   {
     path: "/admin",
     component: AdminPage,
+    auth: true,
   },
   {
     path: "/blogs/create",
     component: CreatePage,
+    auth: true,
   },
   {
     path: "/blogs/:id/edit",
     component: EditPage,
+    auth: true,
   },
   {
     path: "/blogs/:id",
