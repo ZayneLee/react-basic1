@@ -1,10 +1,11 @@
 import axios from "axios";
 import propTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useToast from "../hooks/toast";
 
-const BlogForm = ({ editing, addToast }) => {
-  const history = useHistory();
+const BlogForm = ({ editing }) => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
@@ -14,12 +15,13 @@ const BlogForm = ({ editing, addToast }) => {
   const [originalPublish, setOriginalPublish] = useState(false);
   const [titleError, setTitleError] = useState(false);
   const [bodyError, setBodyError] = useState(false);
+  const { addToast } = useToast();
 
   const goBack = () => {
     if (editing) {
-      history.push(`/blogs/${id}`);
+      navigate(`/blogs/${id}`);
     } else {
-      history.push("/blogs");
+      navigate("/blogs");
     }
   };
 
@@ -51,7 +53,7 @@ const BlogForm = ({ editing, addToast }) => {
             publish,
           })
           .then(() => {
-            history.push(`/blogs/${id}`);
+            navigate(`/blogs/${id}`);
           });
       } else {
         axios
@@ -66,7 +68,7 @@ const BlogForm = ({ editing, addToast }) => {
               type: "success",
               text: "Successfully created!",
             });
-            history.push("/admin");
+            navigate("/admin");
           });
       }
     }

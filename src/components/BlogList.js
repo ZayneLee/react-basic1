@@ -1,7 +1,7 @@
 import axios from "axios";
 import propTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useToast from "../hooks/toast";
 import Card from "./Card";
 import LoadingSpinner from "./LoadingSpinner";
@@ -9,7 +9,7 @@ import Pagination from "./Pagination";
 
 const BlogList = ({ isAdmin }) => {
   const { addToast } = useToast();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const pageParam = params.get("page");
@@ -28,7 +28,7 @@ const BlogList = ({ isAdmin }) => {
   }, [numberOfPosts]);
 
   const onClickPageButton = (page) => {
-    history.push(`${location.pathname}?page=${page}`);
+    navigate(`${location.pathname}?page=${page}`);
     getPosts(page);
   };
 
@@ -97,7 +97,7 @@ const BlogList = ({ isAdmin }) => {
         <Card
           key={post.id}
           title={post.title}
-          onClick={() => history.push(`/blogs/${post.id}`)}
+          onClick={() => navigate(`/blogs/${post.id}`)}
         >
           {isAdmin ? (
             <div>
@@ -116,7 +116,7 @@ const BlogList = ({ isAdmin }) => {
 
   const onSearch = (e) => {
     if (e.key === "Enter") {
-      history.push(`${location.pathname}?page=1`);
+      navigate(`${location.pathname}?page=1`);
       setCurrentPage(1);
       getPosts(1);
     }
