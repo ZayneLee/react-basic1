@@ -68,7 +68,7 @@ const BlogList = ({ isAdmin }) => {
   useEffect(() => {
     setCurrentPage(parseInt(pageParam) || 1);
     getPosts(parseInt(pageParam) || 1);
-  }, []);
+  }, [pageParam]);
 
   const deleteBlog = (e, id) => {
     e.stopPropagation();
