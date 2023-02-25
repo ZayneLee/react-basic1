@@ -23,7 +23,16 @@ const BlogList = ({ isAdmin }) => {
 
   const limit = 5;
 
+  async function getReqeusts() {
+    const response = await axios.get(
+      `https://zayne-blog-project.herokuapp.com/reqeusts`
+    );
+    return responst.data;
+  }
+
   useEffect(() => {
+    const resData = getReqeusts();
+    console.log(resData);
     setNumberOfPages(Math.ceil(numberOfPosts / limit));
   }, [numberOfPosts]);
 
